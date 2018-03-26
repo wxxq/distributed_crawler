@@ -38,18 +38,7 @@ update_price_code = "update train_price_tc set train_code = '%s' where train_cod
 
 # 点评列表
 ist_dp_shop = "replace INTO `dianping`.`dp_shop_url` (`url`, `shop_id`, `city_id`, `category_id`, `province_id`, `create_time`, `nice`, `selected`, `status`, `http_code`) VALUES ('%s', %s, %s, %s,NULL, now(), 0, 0, 0, '-1')"
-dq_list_job ="select id,url,status, nice, selected, http_code from dp_list_url WHERE selected = 0 and http_code =-1 and status = 0  order by nice LIMIT %s"
-upt_dp_list_selected = 'update dp_list_url set selected =%s where id = %s'
-upt_dp_list_task = "update dp_list_url set status=%s,nice=%s,selected =%s,http_code=%s where id =%s"
 
-dp_shop_job = "select url_id,url,shop_id,city_id,category_id,status, nice, selected, http_code from dp_shop_url WHERE selected = 0 and http_code =-1 and status = 0  order by nice LIMIT %s"
-upt_dp_shop_selected = 'update dp_shop_url set selected =%s where url_id = %s'
-upt_dp_shop_task = "update dp_shop_url set status=%s,nice=%s,selected =%s,http_code=%s where url_id =%s"
-
-#雪球
-get_task_sql = "select task_id,user_id,page_no,status, nice, selected, http_code from task_user WHERE selected = 0 and http_code =-1 and status = 0  order by nice LIMIT %s"
-upt_xq_task_selected = "update task_user set selected =%s where task_id = %s"
-upt_xq_task = "update task_user set status=%s,nice=%s,selected =%s,http_code=%s where task_id =%s"
 
 class DataService(object):
 
@@ -84,37 +73,7 @@ class DataService(object):
     def update_proxys(cls):
         DataBaseUtil.execute(update_proxys)
 
-    @classmethod
-    def add_station_job(cls,crawler,min_link_size):
-        if crawler.links_queue.qsize <= min_link_size:
-            link_jobs = DataBaseUtil.select(sql_job % BATCH_ADD_LINKS_SIZE)
-            for item_job in link_jobs:
-                try:
-                    cls.update_task_selected(1,item_job[0])
-                    task = StationTask(item_job[0],item_job[1],item_job[2],item_job[3],item_job[4],item_job[5],item_job[6],item_job[7],item_job[8],item_job[9])
-                    link_job = LinkJob(task)
-                    crawler.links_queue.put_link(link_job)
-                except:
-                    # 入队失败回收
-                    cls.update_task_selected(0,item_job[0])
 
-    @classmethod
-    def add_train_job(cls,crawler,min_link_size):
-        if crawler.links_queue.qsize <= min_link_size:
-            train_list = DataBaseUtil.select(train_code_sql)
-            for job in train_list:
-                cls.update_train_state(1,job[0])
-            for item in train_list:
-                try:
-                    train = TrainTask(item[1],item[2],item[3],item[8].strftime('%Y-%m-%d'),item[4],item[0],item[5],item[6],item[7],item[9])
-                    link_job = LinkJob(train)
-                    crawler.links_queue.put_link(link_job)
-                except:
-                    cls.update_train_state(0,item[0])
-
-    @classmethod
-    def update_train_state(cls,state,id):
-        DataBaseUtil.execute(update_train_state%(state,id))
 
 
     @classmethod
@@ -197,42 +156,3 @@ class DataService(object):
     def save_dp_shop(cls,url,shop_id,city_id,category_id):
         DataBaseUtil.execute(ist_dp_shop %(url,shop_id,city_id,category_id))
 
-    @classmethod
-    def add_dp_list_job(cls,crawler,min_link_size):
-        if crawler.links_queue.qsize <= min_link_size:
-            link_jobs = DataBaseUtil.select(dq_list_job % BATCH_ADD_LINKS_SIZE)
-            # 取出数据的同时更新selected状态
-            for job in link_jobs:
-                DataBaseUtil.execute(upt_dp_list_selected%(1,job[0]))
-            for item_job in link_jobs:
-                try:
-                    task = DPListTask(item_job[0],item_job[1],item_job[2],item_job[3],item_job[4],item_job[5])
-                    link_job = LinkJob(task)
-                    crawler.links_queue.put_link(link_job)
-                except:
-                    # 入队失败回收
-                    DataBaseUtil.execute(upt_dp_list_selected%(0,item_job[0]))
-
-    @classmethod
-    def update_dp_list_task(cls,status,nice,selected,fetched_date,http_code,task_id):
-        DataBaseUtil.execute(upt_dp_list_task %(status,nice,selected,http_code,task_id))
-
-    @classmethod
-    def add_dp_shop_job(cls,crawler,min_link_size):
-        if crawler.links_queue.qsize <= min_link_size:
-            link_jobs = DataBaseUtil.select(dp_shop_job % BATCH_ADD_LINKS_SIZE)
-            # 取出数据的同时更新selected状态
-            for job in link_jobs:
-                DataBaseUtil.execute(upt_dp_shop_selected%(1,job[0]))
-            for item_job in link_jobs:
-                try:
-                    task = DPShopTask(item_job[0],item_job[1],item_job[2],item_job[3],item_job[4],item_job[5],item_job[6],item_job[7],item_job[8])
-                    link_job = LinkJob(task)
-                    crawler.links_queue.put_link(link_job)
-                except:
-                    # 入队失败回收
-                    DataBaseUtil.execute(upt_dp_shop_selected%(0,item_job[0]))
-
-    @classmethod
-    def update_dp_shop_task(cls,status,nice,selected,fetched_date,http_code,task_id):
-        DataBaseUtil.execute(upt_dp_shop_task %(status,nice,selected,http_code,task_id))

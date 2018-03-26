@@ -66,5 +66,3 @@ class XQSetting(BaseSetting):
         self.obj = obj
         BaseSetting.__init__(self,obj)
 
-    def __getitem__(self,key):
-        return self.obj[key]
