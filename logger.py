@@ -19,11 +19,11 @@ class LoggerHolder(object):
         self.root_logger=self.create_conf(self.log_back_count,self.log_level)
 
     def create_conf(self, backupCount, level):
-        # price log configure
+        # price logs configure
         root_logger = logging.getLogger()
         if len(root_logger.handlers) == 0:
             root_logger.setLevel(logging.getLevelName(self.log_level))  # Log等级总开关
-            category_path = '../log/%s-%s.txt' % (CATEGORY_LOG, self.suffix)
+            category_path = '../logs/%s-%s.txt' % (CATEGORY_LOG, self.suffix)
             category_handler = RotatingFileHandler(category_path, maxBytes=1024 * 1024 * 1024, backupCount=backupCount,mode='w')
             category_handler.setLevel(level)
             category_handler.setFormatter(self.formatter)

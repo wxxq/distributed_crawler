@@ -2,9 +2,10 @@
 from Queue import Queue
 
 from core.download_worker import DownloadWorker
+from core.download_follwes_worker import DownloadFollowers
 from core.extractor_worker import ExtractorWorker
 from core.proxy_check_worker import ProxyCheckWorker
-from core.queue_monitor import QueueMonitor
+from core.xq_queue_monitor import QueueMonitor
 from queue.pressure_queue import PressureControlQueue
 from queue.http_proxy_queue import HttpProxyQueue
 from service.xq_parse_service import XQParseService
@@ -20,7 +21,9 @@ class Crawler():
     def __init__(self,setting,service,parse_service):
         self.proxy_queue    = HttpProxyQueue(setting['proxy_frequency_time'])
         self.links_queue    = PressureControlQueue(setting["frequency_time"])
+        #th queue that contains the downloaded content
         self.pages_queue    = Queue()
+        self.user_check_queue = PressureControlQueue(setting["user_frequency_time"])
 
         self.threads    = []
         self.runable    = True
@@ -33,11 +36,16 @@ class Crawler():
 
     def start(self):
         self._start_workers()
-        self._start_extractors()
         self._start_queue_monitor()
+        self._start_user_download()
+        self._start_extractors()
         self._start_proxy_check_workers()
 
 
+    def _start_user_download(self):
+        worker = DownloadFollowers(self)
+        worker.start()
+        self.threads.append(worker)
 
     def _start_workers(self):
         for _ in range(self.setting['download_workers_size']):
@@ -78,7 +86,6 @@ class Crawler():
     #启动解析线程
     def _start_new_extractor(self):
         worker = ExtractorWorker(self)
-        #worker.setDaemon(True)
         worker.start()
         self.extractor_workers.append(worker)
 

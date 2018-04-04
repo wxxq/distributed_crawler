@@ -6,16 +6,16 @@ from Queue import PriorityQueue
 
 class PressureControlQueue(object):
     __shared_state = {}
-    link_priority_queue = PriorityQueue()
-    qsize = 0
 
-    def __init__(self,setting):
-        self.__dict__ = self.__shared_state
+    def __init__(self,frequency_time):
+        # self.__dict__ = self.__shared_state
         self._lock = threading.Lock()
         self._qsize_lock = threading.Lock()
         self._queue_lock = threading.Lock()
         self.tick_time = time.time()
-        self.frequency_time = setting['frequency_time']
+        self.frequency_time = frequency_time
+        self.link_priority_queue = PriorityQueue()
+        self.qsize = 0
         
     def get(self):
         with self._lock:

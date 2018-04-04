@@ -12,7 +12,7 @@ DOWNLOAD_HEADERS = [
      "Connection:keep-alive",
      "Host:xueqiu.com",
      "Referer:https://xueqiu.com/people",
-     "Cookie:device_id=ba3446e3ab3cc2a3d054390b137193c1; s=ff1wtme8sq; aliyungf_tc=AQAAAGPTC1LoyA4AQoXv23YF70Se08ad; xq_a_token=19f5e0044f535b6b1446bb8ae1da980a48bbe850; xq_a_token.sig=aaTVFAX9sVcWtOiu-5L8dL-p40k; xq_r_token=6d30415b5f855c12fd74c6e2fb7662ea40272056; xq_r_token.sig=rEvIjgpbifr6Q_Cxwx7bjvarJG0; u=471521803224051; __utmt=1; __utma=1.16239544.1521706461.1521771357.1521803224.3; __utmb=1.2.10.1521803224; __utmc=1; __utmz=1.1521803224.3.3.utmcsr=baidu|utmccn=(organic)|utmcmd=organic; Hm_lvt_1db88642e346389874251b5a1eded6e3=1521706460,1521771357,1521803224; Hm_lpvt_1db88642e346389874251b5a1eded6e3=1521803232",
+    "Cookie:__utmz=1.1521950844.1.1.utmcsr=(direct)|utmccn=(direct)|utmcmd=(none); device_id=8147d889099b145fc775c0afa66ccf78; s=fz11cvq46z; aliyungf_tc=AQAAAOMxjC41uAYAQoXv26zn8nDN45rg; xq_a_token=229a3a53d49b5d0078125899e528279b0e54b5fe; xq_a_token.sig=oI-FfEMvVYbAuj7Ho7Z9mPjGjjI; xq_r_token=8a43eb9046efe1c0a8437476082dc9aac6db2626; xq_r_token.sig=Efl_JMfn071_BmxcpNvmjMmUP40; u=711522754903243; Hm_lvt_1db88642e346389874251b5a1eded6e3=1521950844,1522683252,1522685277,1522754903; Hm_lpvt_1db88642e346389874251b5a1eded6e3=1522754903; __utma=1.1284817915.1521950844.1522683251.1522754903.3; __utmc=1; __utmt=",
      "User-Agent:Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/55.0.2883.87 Safari/537.36"
 ]
 class User(BaseTask):
@@ -25,8 +25,10 @@ class User(BaseTask):
         nice = sql_entity[4]
         selected = sql_entity[5]
         http_code = sql_entity[6]
+        level = sql_entity[7]
         self.uid = uid
         self.no = no
+        self.level = level
         self.header = self.__create_header()
         BaseTask.__init__(self,task_id,status,nice,selected,http_code,None)
         self.url = self.__create_url()
@@ -40,6 +42,7 @@ class User(BaseTask):
         # refer="Referer:https://xueqiu.com/u/%s" % self.uid
         # header.append(refer)
         return header
+
 
 if __name__ == '__main__':
     pass

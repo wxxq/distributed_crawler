@@ -1,0 +1,54 @@
+store_path: "E:/xueqiu/%s-%s.json"
+
+frequency_time: 0.1
+
+user_frequency_time: 10
+
+min_user_queue_size: 1
+
+user_batch_add_links_size: 1
+
+#是否需要增加日期
+date_need_add: false
+
+#是否使用代理
+if_use_proxy: false
+
+#代理使用
+proxy_frequency_time: 10
+
+# nice 最大值设置
+catch_num: 10
+
+download_workers_size: 16
+
+extractor_workers_size: 1
+
+proxy_checker_size: 5
+
+links_queue_min_size: 12288
+
+batch_add_links_size: 4096
+
+check_url: "https://xueqiu.com"
+
+download_headers:
+    - "Accept:text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8"
+    - "Accept-Encoding:gzip,deflate, sdch"
+    - "Accept-Language:zh-CN,zh;q=0.8,en;q=0.6"
+    - "Cache-Control:max-age=0"
+    - "Connection:keep-alive"
+    - "Host: www.ly.com"
+    - "Upgrade-Insecure-Requests:1"
+
+check_url:
+    - "Accept:text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8"
+    - "Accept-Encoding:gzip, deflate, sdch, br"
+    - "Accept-Language:zh-CN,zh;q=0.8,en;q=0.6"
+    - "Cache-Control:max-age=0"
+    - "Connection:keep-alive"
+    - "Cookie:__utmz=1.1521950844.1.1.utmcsr=(direct)|utmccn=(direct)|utmcmd=(none); device_id=8147d889099b145fc775c0afa66ccf78; s=fz11cvq46z; aliyungf_tc=AQAAAOMxjC41uAYAQoXv26zn8nDN45rg; xq_a_token=229a3a53d49b5d0078125899e528279b0e54b5fe; xq_a_token.sig=oI-FfEMvVYbAuj7Ho7Z9mPjGjjI; xq_r_token=8a43eb9046efe1c0a8437476082dc9aac6db2626; xq_r_token.sig=Efl_JMfn071_BmxcpNvmjMmUP40; u=711522754903243; Hm_lvt_1db88642e346389874251b5a1eded6e3=1521950844,1522683252,1522685277,1522754903; Hm_lpvt_1db88642e346389874251b5a1eded6e3=1522754903; __utma=1.1284817915.1521950844.1522683251.1522754903.3; __utmc=1; __utmt="
+    - "Host:xueqiu.com"
+    - "Referer:https://xueqiu.com/u/4731243626"
+    - "Upgrade-Insecure-Requests:1"
+    - "User-Agent:Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/55.0.2883.87 Safari/537.36"

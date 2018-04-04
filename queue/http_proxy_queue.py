@@ -27,9 +27,9 @@ class HttpProxyQueue(object):
     _lock  = threading.Condition(threading.Lock())
     _queue_lock  = threading.Condition(threading.Lock())
 
-    def __init__(self,setting):
+    def __init__(self,proxy_frequency_time):
         self.__dict__ = self.__shared_state
-        self.proxy_frequency_time = setting['proxy_frequency_time']
+        self.proxy_frequency_time = proxy_frequency_time
         
     def get(self):
         with self._lock:

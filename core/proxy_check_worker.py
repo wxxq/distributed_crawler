@@ -5,7 +5,6 @@ import threading
 import mycurl
 from job.proxy_job import ProxyJob
 import logging as log
-from settings import check_url,check_heades
 import json
 class ProxyCheckWorker(threading.Thread):
     """

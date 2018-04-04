@@ -4,7 +4,7 @@ import sys
 import traceback
 import logging as log
 from base_parse_service import BaseParseService
-
+from src.train.util.mongo_util import MongoUtil
 
 class XQParseService(BaseParseService):
 
@@ -21,6 +21,20 @@ class XQParseService(BaseParseService):
         return False
 
     def parse_content(self,content,link_job):
+        task = link_job.task
+        user_id = task.uid
+        page_no = task.no
+        level = task.level
+        data=json.loads(content)
+        followers = data["followers"]
+        for follower in followers:
+            id = follower["id"]
+            count = MongoUtil.count("xq_usre", {"id": id})
+            if count == 0:
+                follower["level"] = level
+                MongoUtil.insert("xq_user", follower)
+
+    def parse_content_to_file(self,content,link_job):
         task = link_job.task
         user_id = task.uid
         page_no = task.no

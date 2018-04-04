@@ -5,7 +5,6 @@ from mysql_util import DataBaseUtil
 from src.train.job.link_job import LinkJob
 from src.train.job.station_task import StationTask
 from src.train.job.dp_task import DPListTask,DPShopTask
-from settings import BATCH_ADD_LINKS_SIZE,fetch_date
 #代理Sql
 sql_proxy = 'select id,ip,port from train_proxy where is_use=0 group by ip'
 update_proxy_state = 'update train_proxy set is_use =1 where id = %s'
@@ -26,7 +25,7 @@ update_train_task = "update train_task set status=%s,nice=%s,selected =%s,fetche
 
 ist_stop_sql = "replace into train_line_stop_tc(train_code,name,sequence,arrive_time,staytime,days,duration,depart_time,grade,train_no)value('%s','%s',%s,'%s',%s,%s,%s,'%s','%s','%s')"
 get_alia_station = "select quanpin from station_name_tc where name = '%s'"
-insert_s2s = "replace INTO `station_task_tc` (`begin_stop`, `ctrip_begin_stop`, `end_stop`, `ctrip_end_stop`, `status`, `nice`, `selected`, `fetched_date`, `http_code`) VALUES ( '%s', '%s', '%s', '%s', '0', '0', '0', '"+fetch_date+"', -1);"
+insert_s2s = "replace INTO `station_task_tc` (`begin_stop`, `ctrip_begin_stop`, `end_stop`, `ctrip_end_stop`, `status`, `nice`, `selected`, `fetched_date`, `http_code`) VALUES ( '%s', '%s', '%s', '%s', '0', '0', '0', '', -1);"
 
 sql_stop_no = "SELECT train_code,train_no from train_line_stop_tc GROUP BY train_code"
 insert_merge_stop = "REPLACE INTO train_code_merge (train_code,train_no,substring_str) values('%s','%s','%s')"
