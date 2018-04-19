@@ -5,7 +5,7 @@ if sys.getdefaultencoding() != default_encoding:
     reload(sys)
     sys.setdefaultencoding(default_encoding)
 import redis
-from src.train.settings import redis_db
+from settings import redis_db
 import logging as log
 import time
 import traceback

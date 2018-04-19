@@ -3,8 +3,8 @@
 import sys
 import threading
 import time
-from src.train.job.proxy_job import ProxyJob
-from src.train.util.data_service import DataService
+from job.proxy_job import ProxyJob
+from util.data_service import DataService
 import logging as log
 
 class QueueMonitor(threading.Thread):

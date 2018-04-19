@@ -7,11 +7,10 @@ from core.proxy_check_worker import ProxyCheckWorker
 from core.queue_monitor import QueueMonitor
 from queue.pressure_queue import PressureControlQueue
 from queue.http_proxy_queue import HttpProxyQueue
-from service.xq_parse_service import XQParseService
-from service.xq_service import XQService
 from load_config import load_config
 from logging.config import fileConfig
-
+from service.xq_user_article_service import XQUserArticleService
+from service.xq_user_article_parse_service import XQUserArticleParseService
 
 class Crawler():
     """
@@ -85,8 +84,8 @@ class Crawler():
 
 if __name__ == "__main__":
     fileConfig("logger_config.ini")
-    xq_config=load_config("xq")
-    xq_service = XQService(xq_config)
-    xq_parse_service = XQParseService(xq_config)
+    xq_config=load_config("xq_user_article")
+    xq_service = XQUserArticleService(xq_config)
+    xq_parse_service = XQUserArticleParseService(xq_config)
     crawler = Crawler(xq_config,xq_service,xq_parse_service)
     crawler.start()

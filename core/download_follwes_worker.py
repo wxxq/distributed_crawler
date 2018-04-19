@@ -10,16 +10,16 @@ import urllib
 # import ssl
 # ssl._create_default_https_context = ssl._create_unverified_context
 import logging as log
-from src.train.job.page_job import PageJob
-from src.train.errors import HostResolvedError, TimeoutError
-from src.train.settings import PC_USER_AGENTS_SUM, PC_USER_AGENTS, OK_CODE, NOT_FOUND
+from job.page_job import PageJob
+from errors import HostResolvedError, TimeoutError
+from settings import PC_USER_AGENTS_SUM, PC_USER_AGENTS, OK_CODE, NOT_FOUND
 from StringIO import StringIO
 import gzip
 import urllib2
 import json
-from src.train.util.mongo_util import MongoUtil
-from src.train.util.mysql_util import DataBaseUtil
-from src.train.util.redis_util import RedisUtil
+from util.mongo_util import MongoUtil
+from util.mysql_util import DataBaseUtil
+from util.redis_util import RedisUtil
 import os
 
 HEAD = [

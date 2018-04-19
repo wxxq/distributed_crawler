@@ -10,9 +10,9 @@ import urllib
 #import ssl
 #ssl._create_default_https_context = ssl._create_unverified_context
 import logging as log
-from src.train.job.page_job import PageJob
-from src.train.errors import HostResolvedError, TimeoutError
-from src.train.settings import  PC_USER_AGENTS_SUM,PC_USER_AGENTS,OK_CODE, NOT_FOUND
+from job.page_job import PageJob
+from errors import HostResolvedError, TimeoutError
+from settings import  PC_USER_AGENTS_SUM,PC_USER_AGENTS,OK_CODE, NOT_FOUND
 from StringIO import StringIO
 import gzip
 import urllib2
@@ -34,7 +34,7 @@ class DownloadWorker(threading.Thread):
                 proxy_job = None
                 if self.crawler.setting['if_use_proxy']:
                     proxy_job = self.proxy_queue.get()
-                status, content = self._down(link_job)
+                status, content = self._down(link_job,proxy_job)
                 if status == OK_CODE:
                     page_job.content = content
                     link_job.http_code = OK_CODE
@@ -106,11 +106,17 @@ class DownloadWorker(threading.Thread):
         log.info('Download url=%s, status=%s, response=%s, bodylength=%s, proxy=%s' % (link_job.url, status, response, body_length, 'none'))
         return status, content
 
-    def _down(self,link_job):
+    def _down(self,link_job,proxy=None):
         content = ''
         status = None
         response = None
+        proxies = None
         try:
+            if proxy:
+                proxies={"http":"%s:%s"%(proxy.ip,proxy.port)}   #设置你想要使用的代理
+                proxy_s=urllib2.ProxyHandler(proxies)
+                opener=urllib2.build_opener(proxy_s)
+                urllib2.install_opener(opener)
             request_obj = urllib2.Request(link_job.url)
             for item in link_job.task.header:
                 key=item.split(":")[0]

@@ -55,6 +55,17 @@ def main():
     load_media()
     pass
 
+def down(url):
+    headers = { 'User-Agent':'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36' }
+    proxies={"http":"60.12.126.150:8080"}   #设置你想要使用的代理
+    proxy_s=urllib2.ProxyHandler(proxies)
+    opener=urllib2.build_opener(proxy_s)
+    urllib2.install_opener(opener)
+    req = urllib2.Request(url, headers=headers)
+    response = urllib2.urlopen(req)
+    print response.read()
 
 if __name__ == '__main__':
-    main()
+    # main()
+    upt_task_selected = "update %s(table_name) set selected =%%s where task_id = %%s"
+    print upt_task_selected % 'tt'

@@ -5,7 +5,7 @@ import traceback
 import logging as log
 import mycurl
 from base_parse_service import BaseParseService
-from src.train.util.data_service import DataService
+from util.data_service import DataService
 
 
 class DPShopParseService(BaseParseService):

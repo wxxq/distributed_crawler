@@ -1,18 +1,10 @@
-store_path: "E:/xueqiu/%s-%s.json"
-
 frequency_time: 0.1
-
-user_frequency_time: 0.1
-
-min_user_queue_size: 500
-
-user_batch_add_links_size: 100
 
 #是否需要增加日期
 date_need_add: false
 
 #是否使用代理
-if_use_proxy: false
+if_use_proxy: true
 
 #代理使用
 proxy_frequency_time: 10
@@ -22,15 +14,15 @@ catch_num: 10
 
 download_workers_size: 16
 
-extractor_workers_size: 1
+extractor_workers_size: 4
 
-proxy_checker_size: 5
+proxy_checker_size: 16
 
 links_queue_min_size: 12288
 
 batch_add_links_size: 4096
 
-check_url: "https://xueqiu.com"
+check_url: "https://xueqiu.com/cubes/list.json?user_id=5762889842&sp_only=true"
 
 download_headers:
     - "Accept:text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8"
@@ -47,7 +39,7 @@ check_headers:
     - "Accept-Language:zh-CN,zh;q=0.8,en;q=0.6"
     - "Cache-Control:max-age=0"
     - "Connection:keep-alive"
-    - "Cookie:__utmz=1.1521950844.1.1.utmcsr=(direct)|utmccn=(direct)|utmcmd=(none); device_id=8147d889099b145fc775c0afa66ccf78; s=fz11cvq46z; aliyungf_tc=AQAAAOMxjC41uAYAQoXv26zn8nDN45rg; xq_a_token=229a3a53d49b5d0078125899e528279b0e54b5fe; xq_a_token.sig=oI-FfEMvVYbAuj7Ho7Z9mPjGjjI; xq_r_token=8a43eb9046efe1c0a8437476082dc9aac6db2626; xq_r_token.sig=Efl_JMfn071_BmxcpNvmjMmUP40; u=711522754903243; Hm_lvt_1db88642e346389874251b5a1eded6e3=1521950844,1522683252,1522685277,1522754903; Hm_lpvt_1db88642e346389874251b5a1eded6e3=1522754903; __utma=1.1284817915.1521950844.1522683251.1522754903.3; __utmc=1; __utmt="
+    - "Cookie:Hm_lvt_1db88642e346389874251b5a1eded6e3=1521821535,1524038707; device_id=c81eb43cd4ae47fd16dd0222622525f1; __utma=1.1808524596.1521821536.1524042222.1524047672.4; __utmz=1.1521821536.1.1.utmcsr=(direct)|utmccn=(direct)|utmcmd=(none); s=f61bu7ode8; aliyungf_tc=AQAAAO6PmEO5oQAAQoXv29RbwmXijqQh; xq_a_token=229a3a53d49b5d0078125899e528279b0e54b5fe; xq_a_token.sig=oI-FfEMvVYbAuj7Ho7Z9mPjGjjI; xq_r_token=8a43eb9046efe1c0a8437476082dc9aac6db2626; xq_r_token.sig=Efl_JMfn071_BmxcpNvmjMmUP40; u=781524038706490; Hm_lpvt_1db88642e346389874251b5a1eded6e3=1524047684; __utmc=1; __utmb=1.2.10.1524047672; __utmt=1"
     - "Host:xueqiu.com"
     - "Referer:https://xueqiu.com/u/4731243626"
     - "Upgrade-Insecure-Requests:1"

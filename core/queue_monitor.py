@@ -4,7 +4,7 @@ import sys
 sys.path.append('..')
 import threading
 import time
-from src.train.job.proxy_job import ProxyJob
+from job.proxy_job import ProxyJob
 from util.data_service import DataService
 import logging as log
 class QueueMonitor(threading.Thread):

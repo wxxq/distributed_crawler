@@ -4,7 +4,7 @@ import sys
 import traceback
 import logging as log
 from base_parse_service import BaseParseService
-from src.train.util.mongo_util import MongoUtil
+from util.mongo_util import MongoUtil
 
 class XQParseService(BaseParseService):
 
@@ -29,9 +29,9 @@ class XQParseService(BaseParseService):
         followers = data["followers"]
         for follower in followers:
             id = follower["id"]
-            count = MongoUtil.count("xq_usre", {"id": id})
+            count = MongoUtil.count("xq_user", {"id": id})
             if count == 0:
-                follower["level"] = level
+                follower["level"] = level + 1
                 MongoUtil.insert("xq_user", follower)
 
     def parse_content_to_file(self,content,link_job):

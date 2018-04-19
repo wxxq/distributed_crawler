@@ -1,7 +1,7 @@
 # -*- coding:utf-8 -*-
 import sys
-from src.train.service.base_service import BaseService
-from src.train.job.station_task import StationTask
+from service.base_service import BaseService
+from job.station_task import StationTask
 
 #12306 站到站
 train_code_sql = "SELECT id, start_station,end_station,train_no,train_code, status, nice, selected, fetched_date, http_code from train_task WHERE selected = 0 and http_code =-1 and status = 0  order by nice LIMIT 500"

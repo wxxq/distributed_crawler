@@ -4,7 +4,7 @@ default_encoding = "utf-8"
 if sys.getdefaultencoding() != default_encoding:
     reload(sys)
     sys.setdefaultencoding(default_encoding)
-from src.train.settings import mongo_database
+from settings import mongo_database
 from pymongo import MongoClient
 import logging as log
 import time
@@ -37,9 +37,12 @@ class MongoUtil(object):
 
 
     @classmethod
-    def find(cls,collection,filter,searched_fields,batch_size):
+    def find(cls,collection,filter,searched_fields,batch_size=None):
         collection=DB.__getitem__(collection)
-        cursor=collection.find(filter,searched_fields).sort([("_id",1)]).limit(batch_size)
+        if batch_size:
+            cursor=collection.find(filter,searched_fields).sort([("_id",1)]).limit(batch_size)
+        else:
+            cursor=collection.find(filter,searched_fields).sort([("_id",1)])
         return cursor
 
     @classmethod
@@ -62,12 +65,28 @@ class MongoUtil(object):
         return count
 
     @classmethod
+    def delete(cls,collection,filter):
+        DB.__getitem__(collection).delete_one(filter)
+
+    @classmethod
     def close(self):
         CONNECT.close()
 
 
 if __name__ == '__main__':
     from bson.objectid import ObjectId
-    mongo_id = MongoUtil.find("xq_user",{"_id":{"$gt":ObjectId("5ab9eee405c40311e0ff5b68")}},{"_id":1,"id":1,"level":1},1)
-    for item in mongo_id:
-        print item
+    dict={}
+    cursor = MongoUtil.find("xq_user",{},{"_id":1,"id":1})
+    for item in cursor:
+        id=item["id"]
+        _id = item["_id"]
+        exist = 0
+        try:
+            exist=dict[id]
+        except:
+            pass
+        if not exist:
+            dict[id] = 1
+        else:
+            print item
+            MongoUtil.delete("xq_user",{"_id":ObjectId(_id)})

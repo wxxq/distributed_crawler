@@ -2,9 +2,9 @@
 import sys
 sys.path.append('..')
 from mysql_util import DataBaseUtil
-from src.train.job.link_job import LinkJob
-from src.train.job.station_task import StationTask
-from src.train.job.dp_task import DPListTask,DPShopTask
+from job.link_job import LinkJob
+from job.station_task import StationTask
+from job.dp_task import DPListTask,DPShopTask
 #代理Sql
 sql_proxy = 'select id,ip,port from train_proxy where is_use=0 group by ip'
 update_proxy_state = 'update train_proxy set is_use =1 where id = %s'
