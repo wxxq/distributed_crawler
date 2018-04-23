@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import mycurl
 import pycurl
 import random
 import socket
@@ -34,7 +35,7 @@ class DownloadWorker(threading.Thread):
                 proxy_job = None
                 if self.crawler.setting['if_use_proxy']:
                     proxy_job = self.proxy_queue.get()
-                status, content = self._down(link_job,proxy_job)
+                status, content = self._download(link_job,proxy_job)
                 if status == OK_CODE:
                     page_job.content = content
                     link_job.http_code = OK_CODE
@@ -75,10 +76,11 @@ class DownloadWorker(threading.Thread):
             log.info("Download error %s [%s] for url [%s] with proxy [%s]" % (e[0], e[1], link_job.url, proxy_job))
         
         if response and response.status:
+            buf = StringIO( response.body)
+            f = gzip.GzipFile(fileobj=buf)
+            content = f.read()
             status = response.status
             body_length = len(response.body)
-            content = response.body.decode('utf-8')
-            print content
         else:
             status, response, body_length = None, None, None
             

@@ -12,6 +12,7 @@ class LinkJob(object):
         self.nice = task.nice
         self.fetched_date = task.fetched_date
         self.task = task
+        self.category = None
     
     def __cmp__(self, link_job):
         if isinstance(link_job, LinkJob):
@@ -19,6 +20,9 @@ class LinkJob(object):
         else:
             return -1
 
+
+    def set_category(self,name):
+        self.category = name
 
 class Userjob(object):
 

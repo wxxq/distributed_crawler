@@ -17,25 +17,23 @@ DOWNLOAD_HEADERS = [
      "User-Agent:Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/55.0.2883.87 Safari/537.36"
 ]
 
-class UserArticle(BaseTask):
-    url_pattern = "https://xueqiu.com/v4/statuses/user_timeline.json?page=%s&user_id=%s"
+class UserCube(BaseTask):
+    url_pattern = "https://xueqiu.com/cubes/list.json?user_id=%s"
 
     def __init__(self, sql_entity):
         task_id = sql_entity[0]
         uid = sql_entity[1]
-        no = sql_entity[2]
-        status = sql_entity[3]
-        nice = sql_entity[4]
-        selected = sql_entity[5]
-        http_code = sql_entity[6]
+        status = sql_entity[2]
+        nice = sql_entity[3]
+        selected = sql_entity[4]
+        http_code = sql_entity[5]
         self.uid = uid
-        self.no = no
         self.header = self.__create_header()
         BaseTask.__init__(self, task_id, status, nice, selected, http_code, None)
         self.url = self.__create_url()
 
     def __create_url(self):
-        url = self.url_pattern % (self.no, self.uid)
+        url = self.url_pattern % ( self.uid)
         return url
 
     def __create_header(self):

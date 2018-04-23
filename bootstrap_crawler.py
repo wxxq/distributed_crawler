@@ -1,4 +1,4 @@
-#-*- coding: utf-8 -*-
+# -*- coding: utf-8 -*-
 from Queue import Queue
 
 from core.download_worker import DownloadWorker
@@ -10,25 +10,28 @@ from queue.http_proxy_queue import HttpProxyQueue
 from load_config import load_config
 from logging.config import fileConfig
 from service.xq_user_article_service import XQUserArticleService
-from service.xq_user_article_parse_service import XQUserArticleParseService
+from service.xq_user_article_service import XQUserArticleService
+from service.xq_user_cubes_service import XQUserCubeService
+from service.xq_user_stocks_service import XQUserStockService
+
 
 class Crawler():
     """
     Main Thread
     """
-    def __init__(self,setting,service,parse_service):
-        self.proxy_queue    = HttpProxyQueue(setting['proxy_frequency_time'])
-        self.links_queue    = PressureControlQueue(setting["frequency_time"])
-        self.pages_queue    = Queue()
 
-        self.threads    = []
-        self.runable    = True
-        self.download_workers   = []
-        self.extractor_workers  = []
+    def __init__(self, setting, services):
+        self.proxy_queue = HttpProxyQueue(setting['proxy_frequency_time'])
+        self.links_queue = PressureControlQueue(setting["frequency_time"])
+        self.pages_queue = Queue()
+
+        self.download_workers = []
+        self.extractor_workers = []
+        self.proxy_check_workers = []
 
         self.setting = setting
-        self.service = service
-        self.parse_service = parse_service
+
+        self.service = self._init_service(services)
 
     def start(self):
         self._start_workers()
@@ -36,7 +39,12 @@ class Crawler():
         self._start_queue_monitor()
         self._start_proxy_check_workers()
 
-
+    def _init_service(self, services):
+        service_container = {}
+        for service in services:
+            name = getattr(service, "name")
+            service_container[name] = service
+        return service_container
 
     def _start_workers(self):
         for _ in range(self.setting['download_workers_size']):
@@ -55,37 +63,43 @@ class Crawler():
 
     def _start_monitor(self):
         worker = QueueMonitor(self)
-        #worker.setDaemon(True)
+        # worker.setDaemon(True)
         worker.start()
-        self.threads.append(worker)
 
-
-    #启动检测http代理的线程
+    # 启动检测http代理的线程
     def _start_new_proxy_checker(self):
         worker = ProxyCheckWorker(self)
-        #worker.setDaemon(True)
+        # worker.setDaemon(True)
         worker.start()
-        self.threads.append(worker)
+        self.proxy_check_workers.append(worker)
 
-    #启动下载线程
+    # 启动下载线程
     def _start_new_worker(self):
         worker = DownloadWorker(self)
-        #worker.setDaemon(True)
+        # worker.setDaemon(True)
         worker.start()
         self.download_workers.append(worker)
 
-    #启动解析线程
+    # 启动解析线程
     def _start_new_extractor(self):
         worker = ExtractorWorker(self)
-        #worker.setDaemon(True)
+        # worker.setDaemon(True)
         worker.start()
         self.extractor_workers.append(worker)
 
 
 if __name__ == "__main__":
     fileConfig("logger_config.ini")
-    xq_config=load_config("xq_user_article")
-    xq_service = XQUserArticleService(xq_config)
-    xq_parse_service = XQUserArticleParseService(xq_config)
-    crawler = Crawler(xq_config,xq_service,xq_parse_service)
+    xq_config = load_config("xq_user_article")
+    services = []
+    xq_article_service = XQUserArticleService(xq_config)
+    xq_cube_service = XQUserCubeService(xq_config)
+    xq_stock_service = XQUserStockService(xq_config)
+    services.append(xq_article_service)
+    services.append(xq_cube_service)
+    services.append(xq_stock_service)
+    crawler = Crawler(xq_config, services)
     crawler.start()
+
+
+

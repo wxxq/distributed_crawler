@@ -10,5 +10,6 @@ class BaseTask(object):
         self.http_code = http_code
         self.fetched_date = fetched_date
 
+
     def __create_url(self):
         pass

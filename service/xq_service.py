@@ -88,7 +88,7 @@ class XQService(BaseService):
             log.error("%s,%s,%s" % (t, v, traceback.format_tb(tb)))
             return None
 
-    def _resurgence_dead_mongo_ids(self,crawler):
+    def _resurgence_dead_mongo_ids(self, crawler):
         with self.lock2:
             if os.path.exists(self.dead_path):
                 content = self._rw_mongo_id(self.dead_path, "r")
@@ -102,4 +102,39 @@ class XQService(BaseService):
                         user_job["level"] = arr[2]
                         u = Userjob(user_job)
                         crawler.user_check_queue.put_link(u)
-                self._rw_mongo_id(self.dead_path, "w","")
+                self._rw_mongo_id(self.dead_path, "w", "")
+
+    def if_has_data(self, content):
+        if content:
+            try:
+                i = content.index('anonymous_count')
+                return True
+            except:
+                pass
+        return False
+
+    def parse_content(self, content, link_job):
+        task = link_job.task
+        user_id = task.uid
+        page_no = task.no
+        level = task.level
+        data = json.loads(content)
+        followers = data["followers"]
+        for follower in followers:
+            id = follower["id"]
+            count = MongoUtil.count("xq_user", {"id": id})
+            if count == 0:
+                follower["level"] = level + 1
+                MongoUtil.insert("xq_user", follower)
+
+    def parse_content_to_file(self, content, link_job):
+        task = link_job.task
+        user_id = task.uid
+        page_no = task.no
+        file_name = self.setting['store_path'] % (user_id, page_no)
+        try:
+            with open(file_name, 'w') as f:
+                f.write(content)
+        except:
+            t, v, tb = sys.exc_info()
+            log.error("%s,%s,%s" % (t, v, traceback.format_tb(tb)))

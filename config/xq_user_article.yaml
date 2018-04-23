@@ -1,4 +1,4 @@
-frequency_time: 0.1
+frequency_time: 0.01
 
 #是否需要增加日期
 date_need_add: false
@@ -18,11 +18,11 @@ extractor_workers_size: 4
 
 proxy_checker_size: 16
 
-links_queue_min_size: 12288
+links_queue_min_size: 5000
 
 batch_add_links_size: 4096
 
-check_url: "https://xueqiu.com/cubes/list.json?user_id=5762889842&sp_only=true"
+check_url: "https://www.xueqiu.com/"
 
 download_headers:
     - "Accept:text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8"
@@ -41,6 +41,6 @@ check_headers:
     - "Connection:keep-alive"
     - "Cookie:Hm_lvt_1db88642e346389874251b5a1eded6e3=1521821535,1524038707; device_id=c81eb43cd4ae47fd16dd0222622525f1; __utma=1.1808524596.1521821536.1524042222.1524047672.4; __utmz=1.1521821536.1.1.utmcsr=(direct)|utmccn=(direct)|utmcmd=(none); s=f61bu7ode8; aliyungf_tc=AQAAAO6PmEO5oQAAQoXv29RbwmXijqQh; xq_a_token=229a3a53d49b5d0078125899e528279b0e54b5fe; xq_a_token.sig=oI-FfEMvVYbAuj7Ho7Z9mPjGjjI; xq_r_token=8a43eb9046efe1c0a8437476082dc9aac6db2626; xq_r_token.sig=Efl_JMfn071_BmxcpNvmjMmUP40; u=781524038706490; Hm_lpvt_1db88642e346389874251b5a1eded6e3=1524047684; __utmc=1; __utmb=1.2.10.1524047672; __utmt=1"
     - "Host:xueqiu.com"
-    - "Referer:https://xueqiu.com/u/4731243626"
+    - "Referer:https://xueqiu.com/u/5762889842"
     - "Upgrade-Insecure-Requests:1"
     - "User-Agent:Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/55.0.2883.87 Safari/537.36"
