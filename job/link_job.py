@@ -24,34 +24,6 @@ class LinkJob(object):
     def set_category(self,name):
         self.category = name
 
-class Userjob(object):
-
-    def __init__(self,user):
-        self.tick_time = time.time()
-        self._id = user["_id"]
-        self.id = user["id"]
-        self.level = user["level"]
-        self.url = self._create_url()
-
-
-    def _create_url(self):
-        url ="https://xueqiu.com/friendships/followers.json?uid=%s&pageNo=1" % self.id
-        return url
-
-    def __cmp__(self, user_job):
-        if isinstance(user_job, Userjob):
-            return cmp(self.tick_time, user_job.tick_time)
-        else:
-            return -1
-
-    def __getitem__(self, item):
-        return self.__getattribute__(item)
-
-    def __setitem__(self, key, value):
-        self.__setattr__(key,value)
-
-    def to_str(self):
-        return "%s,%s,%s" % (self._id,self.id,self.level)
 
 if __name__ == '__main__':
     import os
